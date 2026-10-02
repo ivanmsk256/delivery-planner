@@ -1,0 +1,40 @@
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 480px;
+}
+
+article {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 8px 12px;
+    background: #fff;
+    position: relative; /* точка отсчёта для ручки */
+    cursor: pointer; /* карточку открывают кликом, тащат — за ручку */
+}
+
+.drag-handle {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 4px;
+    border: none;
+    background: none;
+    font-size: 20px;
+    line-height: 1;
+    cursor: grab;
+    user-select: none; /* долгое нажатие не выделяет текст */
+}
+
+article h2 {
+    margin: 0 0 4px;
+    font-size: 18px;
+}
+
+article p {
+    margin: 2px 0;
+}
