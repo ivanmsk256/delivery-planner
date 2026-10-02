@@ -26,7 +26,7 @@ export const DndSortable = ({ id, disabled, children }: Props) => {
         position: "relative", // точка отсчёта для ручки ⠿ (она position: absolute)
     };
 
-    const contextValue = useMemo(() => ({attributes, listeners}), [attributes, listeners]);
+    const contextValue = useMemo(() => ({ attributes, listeners }), [attributes, listeners]);
 
     return (
         <DndSortableContext.Provider value={contextValue}>

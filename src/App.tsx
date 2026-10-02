@@ -1,18 +1,16 @@
-import DeliveryList from './components/DeliveryList'
-import './App.css'
+import DeliveryList from "./components/DeliveryList";
+import "./App.css";
 
 function App() {
-  return (
-    <main>
-      <h1>Доставки на сегодня</h1>
-      <DeliveryList />
-    </main>
-  )
+    return (
+        <main>
+            <h1>Доставки на сегодня</h1>
+            <DeliveryList />
+        </main>
+    );
 }
 
-export default App
-
-
+export default App;
 
 // 6–8 встреч. Среди них: 2 срочные, 2 завершённые, и 3–4 встречи в одном слоте, как в жизни.
 // Шаг 4. Отрисовать список. Обычный map в карточки: фамилия, слот, пометка «срочная», статус. Перетаскивания пока нет. Минимальный CSS — рамка, отступ, промежуток между карточками, — чтобы карточки выглядели карточками.

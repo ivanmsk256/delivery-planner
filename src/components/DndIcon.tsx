@@ -1,5 +1,5 @@
-import { useContext } from "react"
-import { DndSortableContext } from "./DndSortableContext"
+import { useContext } from "react";
+import { DndSortableContext } from "./DndSortableContext";
 
 export default function DndIcon() {
     const sortableContext = useContext(DndSortableContext);
@@ -14,5 +14,5 @@ export default function DndIcon() {
         >
             ⠿
         </button>
-    )
+    );
 }

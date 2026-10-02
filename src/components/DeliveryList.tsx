@@ -10,9 +10,7 @@ import DndDragOverlay from "./DndDragOverlay";
 import { mergeVisibleOrder, pinUrgentDeliveries, saveDeliveryPosition } from "../utils/order";
 import { getStartDeliverys, setLocalUuids } from "../utils/storage";
 
-
 export default function DeliveryList() {
-
     // Функцией, а не значением: закрепление срочных посчитается один раз, при первой отрисовке
     const [deliveries, setDeliveries] = useState<Delivery[]>(() => getStartDeliverys(meetings)); // ПОЛНЫЙ список
     const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null); // UniqueIdentifier = string | number
@@ -21,54 +19,55 @@ export default function DeliveryList() {
     const [isSaving, setIsSaving] = useState(false);
 
     const visibleDeliveries = hideCompleted
-        ? deliveries.filter((del) => del.status === 'active')
-        : deliveries
+        ? deliveries.filter((del) => del.status === "active")
+        : deliveries;
 
     const deliveriesUuids = visibleDeliveries.map(({ uuid }) => uuid); // items = ровно те, что нарисованы
     const draggingDelivery: Delivery | undefined = deliveries.find(({ uuid }) => uuid === activeId);
 
     const sensors = useSensors(
         useSensor(MouseSensor, {
-            activationConstraint: { distance: 8 }
+            activationConstraint: { distance: 8 },
         }),
         useSensor(TouchSensor, {
-            activationConstraint: { delay: 150, tolerance: 8 }
+            activationConstraint: { delay: 150, tolerance: 8 },
         }),
-    )
+    );
 
     const onDragStart = ({ active }: DragStartEvent): void => {
-        setActiveId(active.id)
-    }
+        setActiveId(active.id);
+    };
 
-    const onDragCancel = (): void => { // Esc во время перетаскивания
-        setActiveId(null)
-    }
+    const onDragCancel = (): void => {
+        // Esc во время перетаскивания
+        setActiveId(null);
+    };
 
     const onDragEnd = async ({ active, over }: DragEndEvent): Promise<void> => {
-        setActiveId(null) // первой строкой — копия пропадает при ЛЮБОМ выходе ниже
+        setActiveId(null); // первой строкой — копия пропадает при ЛЮБОМ выходе ниже
 
-        if (!over) return // отпустили мимо списка
+        if (!over) return; // отпустили мимо списка
 
         // Индексы — по ВИДИМОМУ списку: тащили и отпускали именно в нём
         const oldIndex = visibleDeliveries.findIndex((del) => del.uuid === active.id);
         const newIndex = visibleDeliveries.findIndex((del) => del.uuid === over.id);
 
-        if (oldIndex === -1 || newIndex === -1) return // не нашли карточку
-        if (oldIndex === newIndex) return // отпустили на то же место
+        if (oldIndex === -1 || newIndex === -1) return; // не нашли карточку
+        if (oldIndex === newIndex) return; // отпустили на то же место
 
         const oldDeliveries = deliveries;
         const movedVisible = arrayMove(visibleDeliveries, oldIndex, newIndex); // новый порядок того, что на экране
         const pinnedVisible = pinUrgentDeliveries(movedVisible); // срочные наверх — ДО слияния, иначе сдвинутся скрытые
         const res = mergeVisibleOrder(deliveries, pinnedVisible);
         setDeliveries(res); // вписали в полный: скрытые на своих местах
-        const uuids = res.map((del) => del.uuid)
+        const uuids = res.map((del) => del.uuid);
 
         setIsSaving(true);
         try {
             await saveDeliveryPosition(uuids);
             setLocalUuids(uuids); // на устройство — только то, что принял сервер
         } catch (e) {
-            setDeliveries(oldDeliveries) // откат экрана: сервер порядок не принял
+            setDeliveries(oldDeliveries); // откат экрана: сервер порядок не принял
             alert(`При отправке запроса произошла ошибка: ${e}`);
         } finally {
             setIsSaving(false); // и при успехе, и при ошибке
@@ -80,7 +79,7 @@ export default function DeliveryList() {
             <p>Порядок: {deliveries.map(({ lastName }) => lastName).join(", ")}</p>
 
             <label>
-                <input 
+                <input
                     type="checkbox"
                     checked={hideCompleted}
                     onChange={(e) => setHideCompleted(e.target.checked)}
