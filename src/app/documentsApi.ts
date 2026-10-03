@@ -1,6 +1,8 @@
 import { rootService } from "./rootService";
 
 export const PREPARE_BATCH_KEY = "prepareDocumentsBatch";
+// Текст ошибки сервера, когда документы по доставке уже выданы
+export const DOCUMENTS_ALREADY_ISSUED_MESSAGE = "Документы уже выданы";
 
 type DocumentStatus = "new" | "processing" | "queued" | "ready" | "deleted" | "error";
 type DocumentStatusResponse = {

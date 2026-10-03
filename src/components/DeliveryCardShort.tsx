@@ -1,4 +1,5 @@
 import type { Delivery } from "../types";
+import PrintDocumentsButton from "./PrintDocumentsButton";
 import DndIcon from "./DndIcon";
 
 type Props = { delivery: Delivery };
@@ -18,6 +19,8 @@ export default function DeliveryCardShort({ delivery }: Props) {
                 <p>
                     {delivery.address}, м. {delivery.metro}
                 </p>
+
+                {delivery.documentId && <PrintDocumentsButton documentId={delivery.documentId} />}
             </article>
 
             <DndIcon />

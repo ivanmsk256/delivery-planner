@@ -29,6 +29,11 @@ export const handlers = [
         const { ids } = await request.json();
         await delay(800);
 
+        // Переключатель для проверки ошибок: в консоли localStorage.setItem("failPrepare", "1") и F5
+        if (localStorage.getItem("failPrepare") === "1") {
+            return HttpResponse.json({ message: "Сервер недоступен" }, { status: 500 });
+        }
+
         const errors: DocumentError[] = [];
 
         ids.forEach((id) => {
