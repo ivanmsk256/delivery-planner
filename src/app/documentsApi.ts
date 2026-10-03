@@ -1,5 +1,7 @@
 import { rootService } from "./rootService";
 
+export const PREPARE_BATCH_KEY = "prepareDocumentsBatch";
+
 type DocumentStatus = "new" | "processing" | "queued" | "ready" | "deleted" | "error";
 type DocumentStatusResponse = {
     id: string;
