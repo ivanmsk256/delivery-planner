@@ -1,7 +1,9 @@
+import { useEffect } from "react";
 import {
     DOCUMENTS_ALREADY_ISSUED_MESSAGE,
     PREPARE_BATCH_KEY,
     documentApi,
+    getRestartKey,
     useGetDocumentStatusQuery,
     usePrepareDocumentsMutation,
 } from "../app/documentsApi";
@@ -20,7 +22,12 @@ const POLLING_INTERVAL = 3000;
 export default function PrintDocumentsButton({ documentId }: Props) {
     // Триггер не берём: кнопка только читает результат общего запроса из ячейки по ключу
     const [, batch] = usePrepareDocumentsMutation({ fixedCacheKey: PREPARE_BATCH_KEY });
+    const [restartDocument, restart] = usePrepareDocumentsMutation({
+        fixedCacheKey: getRestartKey(documentId),
+    });
+
     const myError = batch.data?.errors.find((e) => e.id === documentId);
+    const restartError = restart.data?.errors.find((e) => e.id === documentId);
 
     // Опрашиваем, только когда общий запрос прошёл и по этому документу нет ошибки
     const canPoll = batch.isSuccess && !myError;
@@ -28,11 +35,32 @@ export default function PrintDocumentsButton({ documentId }: Props) {
     // Последний статус читаем из кэша без запроса: он нужен раньше, чем вызван хук опроса
     const { data } = documentApi.endpoints.getDocumentStatus.useQueryState(documentId);
     const isReady = data?.status === "ready";
+    const isFailed = data?.status === "deleted" || data?.status === "error";
 
-    useGetDocumentStatusQuery(documentId, {
+    const { refetch } = useGetDocumentStatusQuery(documentId, {
         skip: !canPoll,
-        pollingInterval: isReady ? 0 : POLLING_INTERVAL,
+        pollingInterval: isReady || isFailed ? 0 : POLLING_INTERVAL,
     });
+
+    useEffect(() => {
+        if (!isFailed) {
+            return;
+        }
+
+        restartDocument([documentId])
+            .unwrap()
+            .then((res) => {
+                const hasError = res.errors.some((err) => err.id === documentId);
+
+                // Сервер принял документ заново — сразу спрашиваем новый статус
+                if (!hasError) {
+                    refetch();
+                }
+            })
+            .catch(() => {
+                // Запрос не прошёл — текст ошибки покажет restart.isError
+            });
+    }, [isFailed, documentId, restartDocument, refetch]);
 
     const getButtonText = () => {
         // Сначала — как прошёл общий запрос
@@ -49,7 +77,8 @@ export default function PrintDocumentsButton({ documentId }: Props) {
             return BUTTON_TEXT.PrintNotRequired;
         }
 
-        if (myError) {
+        // Ошибка по документу в общем запросе или при перезапуске
+        if (myError || restart.isError || restartError) {
             return BUTTON_TEXT.Error;
         }
 

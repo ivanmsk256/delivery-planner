@@ -19,6 +19,8 @@ type PrepareDocumentsResponse = {
     errors: DocumentError[];
 };
 
+export const getRestartKey = (documentId: string) => `restartDocument-${documentId}`;
+
 export const documentApi = rootService.injectEndpoints({
     endpoints: (builder) => ({
         getDocumentStatus: builder.query<DocumentStatusResponse, string>({
