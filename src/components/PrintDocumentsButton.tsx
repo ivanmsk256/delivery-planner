@@ -7,6 +7,7 @@ import {
     useGetDocumentStatusQuery,
     usePrepareDocumentsMutation,
 } from "../app/documentsApi";
+import { printDocument } from "../utils/printDocument";
 
 type Props = { documentId: string };
 
@@ -50,16 +51,12 @@ export default function PrintDocumentsButton({ documentId }: Props) {
         restartDocument([documentId])
             .unwrap()
             .then((res) => {
-                const hasError = res.errors.some((err) => err.id === documentId);
-
-                // Сервер принял документ заново — сразу спрашиваем новый статус
-                if (!hasError) {
-                    refetch();
+                if (res.errors.some((err) => err.id === documentId)) {
+                    return;
                 }
+                refetch();
             })
-            .catch(() => {
-                // Запрос не прошёл — текст ошибки покажет restart.isError
-            });
+            .catch(() => {});
     }, [isFailed, documentId, restartDocument, refetch]);
 
     const getButtonText = () => {
@@ -91,7 +88,14 @@ export default function PrintDocumentsButton({ documentId }: Props) {
 
     // Активна только при ready: печатать можно только готовый документ
     return (
-        <button type="button" disabled={!isReady}>
+        <button
+            type="button"
+            disabled={!isReady}
+            onClick={(event) => {
+                event.stopPropagation();
+                printDocument(documentId);
+            }}
+        >
             {getButtonText()}
         </button>
     );

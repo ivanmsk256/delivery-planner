@@ -72,16 +72,54 @@ export const handlers = [
     http.get<{ id: string }>("/api/documents/:id/status", async ({ params }) => {
         await delay(300);
 
-        const startedAt = preparedAt.get(params.id);
+        const status = getCurrentStatus(params.id);
 
-        if (startedAt === undefined) {
+        if (status === undefined) {
             return HttpResponse.json({ message: "Документ не найден" }, { status: 404 });
         }
 
-        // Падает только первая подготовка
-        const failStatus = attempts.get(params.id) === 1 ? FAIL_ONCE.get(params.id) : undefined;
-        const status = getStatusByTime(startedAt, Date.now(), failStatus);
-
         return HttpResponse.json({ id: params.id, status });
     }),
+
+    // Файл документа для печати: обычная HTML-страница, которая сама открывает окно печати
+    http.get<{ id: string }>("/api/documents/:id/file", async ({ params }) => {
+        await delay(500);
+
+        const status = getCurrentStatus(params.id);
+
+        if (status === undefined) {
+            return HttpResponse.json({ message: "Документ не найден" }, { status: 404 });
+        }
+
+        if (status !== "ready") {
+            return HttpResponse.json({ message: "Документ ещё не готов" }, { status: 409 });
+        }
+
+        return HttpResponse.html(`<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>Документ ${params.id}</title></head>
+<body>
+    <h1>Документы по доставке</h1>
+    <p>Номер документа: ${params.id}</p>
+    <p>Дата печати: ${new Date().toLocaleString("ru-RU")}</p>
+    <p>Подпись клиента: ____________________</p>
+    <p>Подпись курьера: ____________________</p>
+    <script>window.onload = () => window.print();</script>
+</body>
+</html>`);
+    }),
 ];
+
+// Текущий статус документа или undefined, если его не отдавали на подготовку
+function getCurrentStatus(id: string): DocumentStatus | undefined {
+    const startedAt = preparedAt.get(id);
+
+    if (startedAt === undefined) {
+        return undefined;
+    }
+
+    // Падает только первая подготовка
+    const failStatus = attempts.get(id) === 1 ? FAIL_ONCE.get(id) : undefined;
+
+    return getStatusByTime(startedAt, Date.now(), failStatus);
+}
