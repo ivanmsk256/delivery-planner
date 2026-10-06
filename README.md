@@ -99,4 +99,4 @@ src/
 
 ## Как работаем
 
-Задачи — во вкладке Issues. На каждую задачу — своя ветка и PR, в PR пишем `Closes #N`. Подробные правила появятся в `CONTRIBUTING.md`.
+Задачи — на [доске](https://github.com/orgs/route-lab-dev/projects/1). На каждую задачу — своя ветка и PR, в PR пишем `Closes #N`. Правила работы — в [CONTRIBUTING.md](CONTRIBUTING.md).
