@@ -9,4 +9,5 @@ export type Delivery = {
     slotTo: string; // '11:00'
     urgency: boolean; // срочная или нет;
     status: "active" | "completed";
+    documentId?: string;
 };
