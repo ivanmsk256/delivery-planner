@@ -8,15 +8,6 @@ ul {
     max-width: 480px;
 }
 
-article {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 8px 12px;
-    background: #fff;
-    position: relative; /* точка отсчёта для ручки */
-    cursor: pointer; /* карточку открывают кликом, тащат — за ручку */
-}
-
 .drag-handle {
     position: absolute;
     top: 8px;

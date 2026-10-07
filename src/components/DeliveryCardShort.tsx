@@ -1,6 +1,7 @@
 import type { Delivery } from "../types";
 import PrintDocumentsButton from "./PrintDocumentsButton";
 import DndIcon from "./DndIcon";
+import styles from "./DeliveryCardShort.module.css";
 
 type Props = { delivery: Delivery };
 
@@ -9,7 +10,10 @@ export default function DeliveryCardShort({ delivery }: Props) {
 
     return (
         <div>
-            <article onClick={() => console.log(`открыта карточка ${delivery.lastName}`)}>
+            <article
+                className={styles.card}
+                onClick={() => console.log(`открыта карточка ${delivery.lastName}`)}
+            >
                 <h2>{fullName}</h2>
                 <p>
                     {delivery.slotFrom}–{delivery.slotTo}
