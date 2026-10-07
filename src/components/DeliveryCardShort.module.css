@@ -1,8 +1,36 @@
 .card {
+    display: flex;
+    flex-direction: column; /* блоки карточки — столбиком */
+    gap: 16px; /* зазор между блоками вместо margin у каждого */
+
     border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 8px 12px;
+    padding: 18px 16px 16px;
+    border-radius: 6px;
     background: #fff;
-    position: relative; /* точка отсчёта для ручки */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.16);
     cursor: pointer; /* карточку открывают кликом, тащат — за ручку */
+}
+
+.header {
+    display: flex;
+    justify-content: space-between; /* метки — влево, ⠿ — вправо (заработает в Т4) */
+}
+
+.name {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1c2340;
+    line-height: 24px;
+}
+
+.cardAddress {
+    color: #222;
+}
+
+.cardTime {
+    color: #1c2340;
+}
+
+.cardMetro {
+    color: #888;
 }
