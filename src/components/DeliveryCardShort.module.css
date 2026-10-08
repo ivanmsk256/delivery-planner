@@ -1,7 +1,7 @@
 .card {
     display: flex;
     flex-direction: column; /* блоки карточки — столбиком */
-    gap: 16px; /* зазор между блоками вместо margin у каждого */
+    gap: 12px; /* зазор между блоками вместо margin у каждого */
 
     border: 1px solid #ccc;
     padding: 18px 16px 16px;
@@ -13,7 +13,7 @@
 
 .header {
     display: flex;
-    justify-content: space-between; /* метки — влево, ⠿ — вправо (заработает в Т4) */
+    justify-content: space-between;
 }
 
 .name {
@@ -21,16 +21,52 @@
     font-weight: 700;
     color: #1c2340;
     line-height: 24px;
+    margin: 0;
 }
 
-.cardAddress {
+.meta {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* между строками */
+}
+
+.cardRow {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px; /* иконка ↔ текст */
+    font-size: 16px;
+    line-height: 20px;
+}
+
+.icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    margin: 0 2px;
     color: #222;
 }
 
-.cardTime {
+.address {
+    color: #222;
+    text-decoration: underline; /* у span подчёркивания по умолчанию нет */
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+}
+
+.time {
     color: #1c2340;
 }
 
-.cardMetro {
+.metro {
+    display: block; /* span с новой строки */
+    margin-top: 4px;
+    font-size: 14px;
+    line-height: 18px;
     color: #888;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap; /* не влезло — новая строка */
+    gap: 8px;
 }

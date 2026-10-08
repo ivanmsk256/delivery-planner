@@ -37,40 +37,48 @@ export default function DeliveryCardShort({ delivery }: Props) {
                     </svg>
                 </h2>
 
-                <div>
-                    <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
-                        <circle cx="10" cy="10" r="10" fill="currentColor" />
-                        <path d="M10 5v6l2.8 2.8" fill="none" stroke="#fff" strokeWidth="2" />
-                    </svg>
+                <div className={styles.meta}>
+                    <div className={styles.cardRow}>
+                        <svg className={styles.icon} viewBox="0 0 20 20" aria-hidden="true">
+                            <circle cx="10" cy="10" r="10" fill="currentColor" />
+                            <path d="M10 5v6l2.8 2.8" fill="none" stroke="#fff" strokeWidth="2" />
+                        </svg>
 
-                    <span className={styles.cardTime}>
-                        {delivery.slotFrom}–{delivery.slotTo}
-                    </span>
+                        <span className={styles.time}>
+                            {delivery.slotFrom}–{delivery.slotTo}
+                        </span>
+                    </div>
+
+                    <div className={styles.cardRow}>
+                        <svg
+                            className={styles.icon}
+                            width="20"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            aria-hidden="true"
+                        >
+                            <path
+                                d="M17.55 2.73 2.65 9.3 9 11.3l1.67 6.07z"
+                                fill="currentColor"
+                                stroke="currentColor"
+                                strokeWidth="1.6"
+                                strokeLinejoin="round"
+                            />
+                        </svg>
+                        <div>
+                            <span className={styles.address}>{delivery.address}</span>
+                            <span className={styles.metro}>метро {delivery.metro}</span>
+                        </div>
+                    </div>
                 </div>
 
-                <div>
-                    <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
-                        <path
-                            d="M17.55 2.73 2.65 9.3 9 11.3l1.67 6.07z"
-                            fill="currentColor"
-                            stroke="currentColor"
-                            strokeWidth="1.6"
-                            strokeLinejoin="round"
-                        />
-                    </svg>{" "}
-                    {delivery.address}
-                    {/* поменять на 'a' адрес — ссылка  */}
-                    <span className={styles.cardMetro}>{delivery.metro}</span>
-                </div>
-
-                <div>
+                <div className={styles.actions}>
                     <DeliveryButtonCall />
                     <DeliveryButtonSms />
                     <DeliveryButtonNote />
                     {delivery.documentId && (
                         <PrintDocumentsButton documentId={delivery.documentId} />
                     )}
-                    {/* Подумать куда положить кнопку Печати */}
                 </div>
             </article>
         </div>
