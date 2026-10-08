@@ -1,0 +1,23 @@
+.tag {
+    display: flex;
+    align-items: center;
+
+    padding: 0 8px;
+    height: 20px;
+    border-radius: 4px;
+
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.red {
+    color: #d92d20;
+    background: #fde2e2;
+}
+
+.gray {
+    color: #666;
+    background: #ececec;
+}

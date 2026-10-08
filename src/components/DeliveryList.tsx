@@ -9,6 +9,7 @@ import { DndSortable } from "./DndSortable";
 import DndDragOverlay from "./DndDragOverlay";
 import { mergeVisibleOrder, pinUrgentDeliveries, saveDeliveryPosition } from "../utils/order";
 import { getStartDeliverys, setLocalUuids } from "../utils/storage";
+import styles from "./DeliveryList.module.css";
 
 export default function DeliveryList() {
     // Функцией, а не значением: закрепление срочных посчитается один раз, при первой отрисовке
@@ -94,7 +95,7 @@ export default function DeliveryList() {
                 onDragCancel={onDragCancel}
             >
                 <SortableContext items={deliveriesUuids} strategy={verticalListSortingStrategy}>
-                    <ul>
+                    <ul className={styles.list}>
                         {visibleDeliveries.map((delivery) => (
                             <DndSortable key={delivery.uuid} id={delivery.uuid} disabled={isSaving}>
                                 <DeliveryCardShort delivery={delivery} />
