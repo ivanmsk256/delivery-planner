@@ -8,6 +8,7 @@ import {
     usePrepareDocumentsMutation,
 } from "../app/documentsApi";
 import { printDocument } from "../utils/printDocument";
+import styles from "./PrintDocumentsButton.module.css";
 
 type Props = { documentId: string };
 
@@ -39,7 +40,7 @@ export default function PrintDocumentsButton({ documentId }: Props) {
     const isFailed = data?.status === "deleted" || data?.status === "error";
 
     const { refetch } = useGetDocumentStatusQuery(documentId, {
-        skip: !canPoll,
+        skip: !canPoll, // skip: true — пропускаем, не спрашиваем
         pollingInterval: isReady || isFailed ? 0 : POLLING_INTERVAL,
     });
 
@@ -90,6 +91,7 @@ export default function PrintDocumentsButton({ documentId }: Props) {
     return (
         <button
             type="button"
+            className={styles.print}
             disabled={!isReady}
             onClick={(event) => {
                 event.stopPropagation();
