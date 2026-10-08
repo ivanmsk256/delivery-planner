@@ -1,3 +1,14 @@
+import styles from "./DeliveryButtonNote.module.css";
+
 export default function DeliveryButtonNote() {
-    return <button>Заметки</button>;
+    return (
+        <button
+            className={styles.note}
+            onClick={(e) => {
+                e.stopPropagation();
+            }}
+        >
+            Заметки
+        </button>
+    );
 }
