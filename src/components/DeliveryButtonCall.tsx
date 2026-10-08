@@ -1,14 +1,5 @@
-import styles from "./DeliveryButtonCall.module.css";
+import ActionButton from "./ActionButton";
 
 export default function DeliveryButtonCall() {
-    return (
-        <button
-            className={styles.buttonCall}
-            onClick={(e) => {
-                e.stopPropagation();
-            }}
-        >
-            Позвонить
-        </button>
-    );
+    return <ActionButton variant="dark">Позвонить</ActionButton>;
 }

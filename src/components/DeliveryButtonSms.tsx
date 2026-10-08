@@ -1,14 +1,5 @@
-import styles from "./DeliveryButtonSms.module.css";
+import ActionButton from "./ActionButton";
 
 export default function DeliveryButtonSms() {
-    return (
-        <button
-            className={styles.sms}
-            onClick={(e) => {
-                e.stopPropagation();
-            }}
-        >
-            SMS
-        </button>
-    );
+    return <ActionButton variant="outline">SMS</ActionButton>;
 }
